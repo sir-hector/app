@@ -22,13 +22,9 @@ export default function App() {
   );
 
   React.useEffect(() => {
-    console.log('tutaj')
     if(response && 'params' in response){
-      console.log('tutaj2')
       if(response.params && 'code' in response.params){
-        console.log('tutaj3');
         (async function getToken() {
-          console.log('tutaj4')
           try {
             const {accessToken} = await exchangeCodeAsync({
                 code: response.params.code,
@@ -44,7 +40,7 @@ export default function App() {
             }, {
               tokenEndpoint: 'https://login.microsoftonline.com/1379b589-a7ee-42f9-b11e-9d9fc572a47b/oauth2/v2.0/token'
             })
-            // console.log(accessToken);
+            console.log(accessToken);
           } catch(e){
             console.log(e)
           }
