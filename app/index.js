@@ -1,11 +1,17 @@
 import * as React from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { exchangeCodeAsync, makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
-import { Button } from 'react-native';
+import { Button, SafeAreaView } from 'react-native';
+import {Stack, useRouter} from 'expo-router'
+import {Specification} from '../components/Specification'
+import {COLORS} from '../constants'
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
+  const [accessToken, setAccesToken] = React.useState(null);
+  const [user, setUser] = React.useState(null);
+  const router = useRouter();
 
   // Endpoint
   const discovery = useAutoDiscovery('https://login.microsoftonline.com/1379b589-a7ee-42f9-b11e-9d9fc572a47b/v2.0');
@@ -40,7 +46,7 @@ export default function App() {
             }, {
               tokenEndpoint: 'https://login.microsoftonline.com/1379b589-a7ee-42f9-b11e-9d9fc572a47b/oauth2/v2.0/token'
             })
-            console.log(accessToken);
+            setAccesToken(accessToken);
           } catch(e){
             console.log(e)
           }
@@ -52,12 +58,19 @@ export default function App() {
   // console.log(request)
   
   return (
-    <Button
-      disabled={!request}
-      title="Login"
-      onPress={() => {
-        promptAsync();
-      }}
-    />
+    <SafeAreaView >
+      <Stack.Screen
+        options={{
+          headerStyle: {backgroundColor: COLORS.lightwhite}
+        }}
+      />
+      <Button
+        disabled={!request}
+        title="Login"
+        onPress={() => {
+          promptAsync();
+        }}
+        />
+      </SafeAreaView>
   );
 }
