@@ -51,6 +51,7 @@ const useFetch = (endpoint) => {
 
   const refetch = () => {
     setIsLoading(true);
+    getData()
     fetchData();
   };
 
