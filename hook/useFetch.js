@@ -22,7 +22,7 @@ const useFetch = (endpoint) => {
       method: "GET",
       url: `https://api.portowastraz.pl/api/${endpoint}`,
       params: {},
-      withCredentials: true,
+      withCredentials: false,
       headers: {
         Authorization: `Bearer ${token}`,
       },

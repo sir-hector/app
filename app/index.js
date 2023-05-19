@@ -6,6 +6,7 @@ import {Stack, useRouter} from 'expo-router'
 import Specification from '../components/Specification'
 import {COLORS} from '../constants'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -27,11 +28,25 @@ export default function App() {
     discovery
   );
 
+  const checkTokenValid = async (token) => {
+    const decodedToken = jwtDecode(accessToken);
+    const expirationTime = decodedToken.exp;
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (expirationTime < currentTime) {
+        return false;
+      }
+    return true;
+  } 
+
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('userToken');
       if(value !== null){
         setAccesToken(value);
+      }
+      if(!await checkTokenValid(accessToken)){
+        await AsyncStorage.removeItem('userToken');
+        setAccesToken(null);
       }
     }catch(e){
     }
